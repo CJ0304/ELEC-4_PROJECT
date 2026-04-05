@@ -20,7 +20,6 @@ upload_records.py   ← batch CSV/Excel import
 analytics.py        ← admin analytics & reporting
 system_settings.py  ← admin service catalog management
 user_management.py  ← admin user & staff management
-about.py            ← about / help page
 """
 
 import streamlit as st
@@ -38,7 +37,6 @@ import upload_records   as pg_upload
 import analytics        as pg_analytics
 import system_settings  as pg_settings
 import user_management  as pg_users
-import about            as pg_about
 
 
 def main():
@@ -101,8 +99,6 @@ def main():
         else:
             st.error("⛔ Admin access required.")
 
-    elif "About" in page:
-        pg_about.render()
 
 
 if __name__ == "__main__":
