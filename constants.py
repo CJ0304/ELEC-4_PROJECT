@@ -2,11 +2,6 @@
 constants.py — Shared constants for ServiSense
 """
 
-RECORDS_FILE  = "service_records.csv"
-SERVICES_FILE = "services.csv"
-USERS_FILE    = "users.json"
-UPLOADS_DIR   = "office_uploads"
-
 OFFICES = [
     "Guidance Counseling",
     "Library",

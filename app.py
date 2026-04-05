@@ -3,31 +3,31 @@ app.py — ServiSense entry point
 ================================
 Run with:  streamlit run app.py
 
-File layout
------------
-app.py                   ← this file (router only)
-constants.py             ← shared constants (offices, departments, file paths, colours)
-auth.py                  ← login / logout / session init
-data.py                  ← CSV/JSON loaders, savers, seed helpers, filter_df()
-exports.py               ← PDF and Excel export  (fixes "string without encoding" bug)
-styles.py                ← CSS injection + plotly_layout()
-ui_components.py         ← sidebar_nav(), page_header(), page_login()
-pages/
-    __init__.py
-    dashboard.py
-    records.py           ← filter fix + PDF export fix
-    add_record.py
-    upload_records.py
-    analytics.py
-    system_settings.py   ← Add-service modal fix
-    user_management.py   ← Add-user   modal fix
-    about.py
+File layout (flat — all modules in root directory)
+--------------------------------------------------
+app.py              ← this file (router only)
+constants.py        ← shared constants (offices, departments, colours)
+auth.py             ← login / logout / session init
+db.py               ← PostgreSQL connection, table creation, seeding
+data.py             ← DB loaders, savers, filter_df(), password hashing
+exports.py          ← PDF and Excel export
+styles.py           ← CSS injection + plotly_layout()
+ui_components.py    ← sidebar_nav(), page_header(), page_login()
+dashboard.py        ← KPI dashboard with charts
+records.py          ← view / filter / edit / export service records
+add_record.py       ← single record entry form
+upload_records.py   ← batch CSV/Excel import
+analytics.py        ← admin analytics & reporting
+system_settings.py  ← admin service catalog management
+user_management.py  ← admin user & staff management
+about.py            ← about / help page
 """
 
 import streamlit as st
 
 from auth import init_session
-from data import init_data, load_records, load_services
+from db import init_tables, seed_defaults
+from data import load_records, load_services
 from styles import inject_css_login, inject_css_app
 from ui_components import page_login, sidebar_nav
 
@@ -60,7 +60,8 @@ def main():
 
     # ── Authenticated app ─────────────────────────────────────────────────────
     inject_css_app()
-    init_data()
+    init_tables()
+    seed_defaults()
 
     with st.spinner("Loading data..."):
         rec_df = load_records()

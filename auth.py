@@ -3,7 +3,7 @@ auth.py — Authentication and session state for ServiSense
 """
 
 import streamlit as st
-from data import load_users, save_users
+from data import load_users, save_users, verify_password
 
 
 # ── Session initialisation ────────────────────────────────────────────────────
@@ -31,7 +31,7 @@ def init_session():
 def login(username: str, password: str) -> bool:
     users = load_users()
     u = users.get(username)
-    if u and u["password"] == password and u.get("status", "Active") == "Active":
+    if u and verify_password(password, u["password"]) and u.get("status", "Active") == "Active":
         st.session_state.authenticated   = True
         st.session_state.user_role       = u["role"]
         st.session_state.user_name       = u["name"]
