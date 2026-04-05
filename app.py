@@ -52,6 +52,10 @@ def main():
 
     init_session()
 
+    # ── Database must be ready before login (login queries the users table) ──
+    init_tables()
+    seed_defaults()
+
     # ── Login gate ────────────────────────────────────────────────────────────
     if not st.session_state.authenticated:
         inject_css_login()
@@ -60,8 +64,6 @@ def main():
 
     # ── Authenticated app ─────────────────────────────────────────────────────
     inject_css_app()
-    init_tables()
-    seed_defaults()
 
     with st.spinner("Loading data..."):
         rec_df = load_records()
