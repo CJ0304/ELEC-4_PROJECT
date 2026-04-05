@@ -118,14 +118,6 @@ def sidebar_nav() -> str:
             nav_btn("⚙️ System Settings")
             nav_btn("👥 User Management")
 
-        st.markdown(
-            "<p style='font-size:0.6rem;color:rgba(255,255,255,0.35);text-transform:uppercase;"
-            "letter-spacing:1.2px;padding:4px 4px;margin:10px 0 6px;"
-            "border-top:1px solid rgba(255,255,255,0.08);font-weight:600;'>Info</p>",
-            unsafe_allow_html=True,
-        )
-        nav_btn("ℹ️ About")
-
         st.markdown("<div style='height:20px;'></div>", unsafe_allow_html=True)
         if st.button("🚪  Sign Out", use_container_width=True, key="logout_btn"):
             logout()
