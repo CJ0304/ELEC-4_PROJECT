@@ -49,6 +49,15 @@ def load_services():
     return pd.read_sql("SELECT * FROM services ORDER BY id", engine())
 
 
+def _clean(val):
+    """Convert pandas NaN / NaT to None so SQL and session state stay clean."""
+    if val is None:
+        return None
+    if isinstance(val, float) and pd.isna(val):
+        return None
+    return val
+
+
 def load_users():
     """Return users as a dict keyed by username (matches old JSON format)."""
     df = pd.read_sql("SELECT * FROM users", engine())
@@ -58,7 +67,7 @@ def load_users():
             "password": row["password"],
             "role":     row["role"],
             "name":     row["name"],
-            "office":   row["office"],
+            "office":   _clean(row["office"]),
             "status":   row["status"],
         }
     return users
@@ -164,6 +173,7 @@ def save_uploaded_file(filename: str, file_data: bytes, office: str | None, uplo
 
 def list_uploaded_files(office: str | None = None) -> pd.DataFrame:
     """List uploaded files (without the binary data)."""
+    office = _clean(office)          # guard against NaN from session state
     with engine().connect() as conn:
         if office:
             result = conn.execute(text(
