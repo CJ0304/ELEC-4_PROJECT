@@ -6,7 +6,7 @@ import pandas as pd
 import streamlit as st
 
 from constants import OFFICES
-from data import load_users, save_users
+from data import load_users, save_users, hash_password
 from ui_components import page_header
 
 
@@ -63,7 +63,7 @@ def render():
                 st.error(f"⚠️ Username '{username.strip()}' already exists.")
             else:
                 fresh_users[username.strip()] = {
-                    "password": password,
+                    "password": hash_password(password),
                     "role":     role,
                     "name":     full_name.strip(),
                     "office":   None if office.startswith("(None") else office,
@@ -107,7 +107,7 @@ def render():
             users[sel_u]["role"]   = erol
             users[sel_u]["office"] = None if eoff.startswith("(None") else eoff
             if npw.strip():
-                users[sel_u]["password"] = npw.strip()
+                users[sel_u]["password"] = hash_password(npw.strip())
             save_users(users)
             st.success("✅ User updated!")
             st.rerun()

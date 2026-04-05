@@ -1,15 +1,13 @@
 """
-pages/add_record.py — Add Record page for ServiSense
+add_record.py — Add Record page for ServiSense
 """
 
-import os
 from datetime import date, datetime
 
-import pandas as pd
 import streamlit as st
 
-from constants import RECORDS_FILE, OFFICES, DEPARTMENTS
-from data import save_records
+from constants import OFFICES, DEPARTMENTS
+from data import add_record
 from ui_components import page_header
 
 
@@ -47,11 +45,7 @@ def render(rec_df, svc_df):
             st.error("⚠️ Student ID and Student Name are required.")
             return
 
-        all_df = pd.read_csv(RECORDS_FILE) if os.path.exists(RECORDS_FILE) else pd.DataFrame()
-        new_id = int(all_df["id"].max()) + 1 if not all_df.empty and "id" in all_df.columns else 1
-
-        new_row = pd.DataFrame([{
-            "id":           new_id,
+        add_record({
             "student_id":   student_id.strip(),
             "student_name": student_name.strip(),
             "department":   dept,
@@ -61,7 +55,6 @@ def render(rec_df, svc_df):
             "remarks":      remarks.strip(),
             "created_by":   st.session_state.user_name,
             "created_at":   datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-        }])
-        save_records(pd.concat([all_df, new_row], ignore_index=True))
+        })
         st.success(f"✅ Record saved for **{student_name.strip()}** under **{svc_choice}**!")
         st.balloons()

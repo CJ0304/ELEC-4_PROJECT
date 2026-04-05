@@ -1,15 +1,13 @@
 """
-pages/upload_records.py — Upload Records page for ServiSense
+upload_records.py — Upload Records page for ServiSense
 """
 
-import os
 from datetime import datetime
 
 import pandas as pd
 import streamlit as st
 
-from constants import RECORDS_FILE, UPLOADS_DIR
-from data import save_records
+from data import add_records, save_uploaded_file, list_uploaded_files, get_uploaded_file
 from ui_components import page_header
 
 
@@ -101,24 +99,18 @@ def render(rec_df, svc_df):
                 new_df = new_df.dropna(subset=["service_date"])
 
             if st.button("✅ Import Records into System", type="primary", key="do_import_btn"):
-                all_df   = pd.read_csv(RECORDS_FILE) if os.path.exists(RECORDS_FILE) else pd.DataFrame()
-                start_id = int(all_df["id"].max()) + 1 if not all_df.empty and "id" in all_df.columns else 1
-                new_df["id"] = range(start_id, start_id + len(new_df))
+                add_records(new_df)
 
-                keep = ["id", "student_id", "student_name", "department", "service_name",
-                        "service_date", "service_hour", "remarks", "created_by", "created_at"]
-                for col in keep:
-                    if col not in new_df.columns:
-                        new_df[col] = ""
-                new_df = new_df[keep]
-
-                save_records(pd.concat([all_df, new_df], ignore_index=True))
-
+                # Archive the uploaded file in the database
                 safe_name = (office or "admin").replace(" ", "_").replace("/", "")
                 ts        = datetime.now().strftime("%Y%m%d_%H%M%S")
-                save_path = os.path.join(UPLOADS_DIR, f"{safe_name}_{ts}_{uploaded.name}")
-                with open(save_path, "wb") as fh:
-                    fh.write(uploaded.getvalue())
+                filename  = f"{safe_name}_{ts}_{uploaded.name}"
+                save_uploaded_file(
+                    filename=filename,
+                    file_data=uploaded.getvalue(),
+                    office=office,
+                    uploaded_by=st.session_state.user_name,
+                )
 
                 st.success(f"✅ {len(new_df)} records imported!")
                 st.balloons()
@@ -131,20 +123,17 @@ def render(rec_df, svc_df):
     st.markdown("<div class='section-divider'></div>", unsafe_allow_html=True)
     st.subheader("📁 Previously Uploaded Files")
 
-    prefix  = (office or "").replace(" ", "_").replace("/", "")
-    uploads = (
-        [f for f in os.listdir(UPLOADS_DIR) if not prefix or f.startswith(prefix)]
-        if os.path.exists(UPLOADS_DIR)
-        else []
-    )
+    uploads_df = list_uploaded_files(office=office)
 
-    if uploads:
-        for uf in sorted(uploads, reverse=True):
-            fpath = os.path.join(UPLOADS_DIR, uf)
-            fsize = os.path.getsize(fpath)
+    if not uploads_df.empty:
+        for _, row in uploads_df.iterrows():
             uc1, uc2 = st.columns([4, 1])
-            uc1.markdown(f"📄 `{uf}` — {fsize / 1024:.1f} KB")
-            with open(fpath, "rb") as f:
-                uc2.download_button("⬇️", f.read(), file_name=uf, key=f"dl_{uf}")
+            uc1.markdown(f"📄 `{row['filename']}` — {row['file_size'] / 1024:.1f} KB")
+            try:
+                _, fdata = get_uploaded_file(int(row["id"]))
+                uc2.download_button("⬇️", fdata, file_name=row["filename"],
+                                    key=f"dl_{row['id']}")
+            except FileNotFoundError:
+                uc2.write("—")
     else:
         st.info("No uploaded files yet for this office.")

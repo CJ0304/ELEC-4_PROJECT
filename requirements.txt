@@ -1,0 +1,7 @@
+streamlit>=1.28
+pandas>=1.0
+plotly>=5.0
+fpdf2>=2.0
+openpyxl>=3.0
+psycopg2-binary>=2.9
+sqlalchemy>=2.0

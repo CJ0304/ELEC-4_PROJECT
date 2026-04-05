@@ -1,24 +1,14 @@
 """
-pages/records.py — Service Records page for ServiSense
-
-FIXES applied here
-------------------
-1. Filter: date inputs are compared as pd.Timestamp, not raw Python date objects,
-   so the >= / <= comparisons on a datetime64 column always work correctly.
-2. Export PDF: uses the safe export_pdf() from exports.py which handles both
-   bytearray (fpdf2 >= 2.x) and str (older builds) output formats.
-3. Add/Edit modal: buttons no longer overlap form elements; session-state flags
-   are toggled cleanly before st.rerun().
+records.py — Service Records page for ServiSense
 """
 
-import os
 from datetime import date, timedelta
 
 import pandas as pd
 import streamlit as st
 
 from constants import OFFICES, DEPARTMENTS
-from data import filter_df, save_records
+from data import filter_df, load_records, delete_record, update_record
 from exports import export_pdf, export_excel
 from ui_components import page_header
 
@@ -46,11 +36,9 @@ def render(rec_df, svc_df):
 
         dept_sel = c4.selectbox("Department", ["All Departments"] + DEPARTMENTS, key="rec_dept")
 
-    # Build filter args — pass None when "All *" is selected so filter_df skips them
     svc_arg  = None if (not svc_sel or svc_sel == "All Services")      else svc_sel
     dept_arg = None if (not dept_sel or dept_sel == "All Departments") else dept_sel
 
-    # FIX: pass sd/ed as-is (date objects); filter_df wraps them in pd.Timestamp internally
     df = filter_df(rec_df, start=sd, end=ed, service=svc_arg, dept=dept_arg, office_lock=office)
 
     # ── Summary KPIs ──────────────────────────────────────────────────────────
@@ -82,7 +70,6 @@ def render(rec_df, svc_df):
     # ── Export buttons ────────────────────────────────────────────────────────
     ec1, ec2, _, _ = st.columns(4)
     with ec1:
-        # FIX: export_pdf returns proper bytes regardless of fpdf2 version
         st.download_button(
             "⬇️ Export PDF",
             data=export_pdf(df),
@@ -136,9 +123,7 @@ def render(rec_df, svc_df):
         st.session_state.edit_id   = selected_id
 
     if col_del.button("🗑️ Delete", use_container_width=True, key="rec_del_btn"):
-        all_df = pd.read_csv("service_records.csv")
-        all_df = all_df[all_df["id"] != selected_id]
-        save_records(all_df)
+        delete_record(int(selected_id))
         st.success("✅ Record deleted successfully.")
         st.rerun()
 
@@ -147,7 +132,7 @@ def render(rec_df, svc_df):
         st.markdown('<div class="modal-card">', unsafe_allow_html=True)
         st.markdown("### ✏️ Edit Service Record")
 
-        all_df  = pd.read_csv("service_records.csv")
+        all_df  = load_records()
         matched = all_df[all_df["id"] == st.session_state.edit_id]
 
         if matched.empty:
@@ -159,9 +144,10 @@ def render(rec_df, svc_df):
                 ec1, ec2 = st.columns(2)
                 new_sid  = ec1.text_input("Student ID",   value=str(row["student_id"]))
                 new_name = ec2.text_input("Student Name", value=str(row["student_name"]))
+                svc_options = active_svcs if active_svcs else OFFICES
                 new_svc  = ec1.selectbox(
-                    "Service", OFFICES,
-                    index=OFFICES.index(row["service_name"]) if row["service_name"] in OFFICES else 0,
+                    "Service", svc_options,
+                    index=svc_options.index(row["service_name"]) if row["service_name"] in svc_options else 0,
                 )
                 new_dept = ec2.selectbox(
                     "Department", DEPARTMENTS,
@@ -176,15 +162,15 @@ def render(rec_df, svc_df):
                 close_btn = sc2.form_submit_button("❌ Cancel", use_container_width=True)
 
             if save_btn:
-                idx = all_df.index[all_df["id"] == st.session_state.edit_id]
-                all_df.loc[idx, "student_id"]   = new_sid
-                all_df.loc[idx, "student_name"] = new_name
-                all_df.loc[idx, "service_name"] = new_svc
-                all_df.loc[idx, "department"]   = new_dept
-                all_df.loc[idx, "service_date"] = str(new_date)
-                all_df.loc[idx, "service_hour"] = new_hour
-                all_df.loc[idx, "remarks"]      = new_rem
-                save_records(all_df)
+                update_record(int(st.session_state.edit_id), {
+                    "student_id":   new_sid,
+                    "student_name": new_name,
+                    "service_name": new_svc,
+                    "department":   new_dept,
+                    "service_date": str(new_date),
+                    "service_hour": new_hour,
+                    "remarks":      new_rem,
+                })
                 st.success("✅ Record updated!")
                 st.session_state.edit_mode = False
                 st.rerun()
