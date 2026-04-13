@@ -541,44 +541,38 @@ def inject_css_app():
             max-width: 100% !important;
         }
 
-        /* Let Streamlit sidebar collapse on mobile — show toggle */
+        /* Sidebar: hidden by default, slides in when Streamlit opens it */
         [data-testid="stSidebar"] {
-            width: 260px !important;
-            min-width: 260px !important;
-            max-width: 260px !important;
-            flex: 0 0 260px !important;
-            position: fixed !important;
-            z-index: 999 !important;
-            height: 100vh !important;
-            top: 0 !important;
-            left: 0 !important;
-            transition: transform 0.3s ease !important;
+            width: 75vw !important;
+            min-width: 220px !important;
+            max-width: 280px !important;
         }
         [data-testid="stSidebar"] > div {
-            width: 260px !important;
-            min-width: 260px !important;
+            width: 100% !important;
+            min-width: 0 !important;
+            padding-top: 10px !important;
         }
-        [data-testid="collapsedControl"],
-        button[aria-label="Close sidebar"],
-        button[aria-label="Collapse sidebar"],
-        button[aria-label="Open sidebar"],
-        [data-testid="stSidebarCollapseButton"] {
-            display: flex !important;
-            position: fixed !important;
-            z-index: 1000 !important;
-            top: 8px !important;
-            left: 8px !important;
-            background: var(--navy) !important;
-            color: var(--gold) !important;
-            border-radius: var(--radius-sm) !important;
-            box-shadow: var(--shadow-md) !important;
-            width: 40px !important;
-            height: 40px !important;
-            align-items: center !important;
-            justify-content: center !important;
+        /* Force left-align everything in sidebar on mobile */
+        [data-testid="stSidebar"] [data-testid="stVerticalBlock"] {
+            align-items: stretch !important;
+        }
+        [data-testid="stSidebar"] .stMarkdown,
+        [data-testid="stSidebar"] .stMarkdown div,
+        [data-testid="stSidebar"] .stMarkdown p {
+            text-align: left !important;
+            justify-content: flex-start !important;
+        }
+        [data-testid="stSidebar"] .stButton > button {
+            text-align: left !important;
+            justify-content: flex-start !important;
         }
 
-        /* Page header — stack vertically, smaller text */
+        /* Main content uses full width when sidebar is collapsed */
+        [data-testid="stAppViewContainer"] {
+            margin-left: 0 !important;
+        }
+
+        /* Page header */
         .page-header {
             padding: 14px 16px;
             margin-top: 0px;
@@ -601,8 +595,6 @@ def inject_css_app():
             margin-bottom: 10px;
         }
         .chart-title { font-size: 0.85rem !important; margin-bottom: 10px; padding-bottom: 8px; }
-
-        /* Modal card */
 
         /* Headings */
         h1 { font-size: 1.5rem !important; }
@@ -644,7 +636,7 @@ def inject_css_app():
             -webkit-overflow-scrolling: touch;
         }
 
-        /* Buttons — full width on mobile */
+        /* Buttons */
         .stButton > button,
         .stFormSubmitButton > button,
         .stDownloadButton > button {
@@ -658,9 +650,6 @@ def inject_css_app():
         .stNumberInput label, .stTextArea label, .stFileUploader label {
             font-size: 0.72rem !important;
         }
-
-        /* Badges */
-        .badge { font-size: 0.62rem; padding: 2px 8px; }
     }
 
     /* ── RESPONSIVE: SMALL MOBILE (≤ 480px) ── */
@@ -683,7 +672,6 @@ def inject_css_app():
         .kpi-card { padding: 12px 14px 10px; }
 
         .chart-card { padding: 10px 8px 8px; }
-
 
         .stTabs [data-baseweb="tab"] {
             padding: 5px 10px !important;

@@ -54,6 +54,44 @@ def page_login():
 # ── Sidebar navigation ────────────────────────────────────────────────────────
 
 def sidebar_nav() -> str:
+    # Mobile hamburger button — clicks Streamlit's hidden sidebar toggle
+    st.markdown("""
+    <style>
+    @media (max-width: 768px) {
+        .mobile-hamburger {
+            display: flex !important;
+            position: fixed;
+            top: 10px;
+            left: 10px;
+            z-index: 9999;
+            background: #0B1F3A;
+            color: #D4AF37;
+            border: 1.5px solid rgba(212,175,55,0.4);
+            border-radius: 8px;
+            width: 42px;
+            height: 42px;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.4rem;
+            cursor: pointer;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+            -webkit-tap-highlight-color: transparent;
+        }
+    }
+    @media (min-width: 769px) {
+        .mobile-hamburger { display: none !important; }
+    }
+    </style>
+    <div class="mobile-hamburger" onclick="
+        var btn = window.parent.document.querySelector('[data-testid=\\'collapsedControl\\'] button')
+            || window.parent.document.querySelector('[data-testid=\\'stSidebarCollapseButton\\'] button')
+            || window.parent.document.querySelector('button[aria-label=\\'Open sidebar\\']')
+            || window.parent.document.querySelector('button[aria-label=\\'Close sidebar\\']')
+            || window.parent.document.querySelector('button[aria-label=\\'Collapse sidebar\\']');
+        if (btn) btn.click();
+    ">☰</div>
+    """, unsafe_allow_html=True)
+
     with st.sidebar:
         st.markdown(f"""
         <div style='padding:20px 6px 16px;'>
