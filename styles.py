@@ -230,7 +230,21 @@ def inject_css_app():
     [data-testid="stSidebar"],
     [data-testid="stSidebar"] p,
     [data-testid="stSidebar"] span,
-    [data-testid="stSidebar"] div { color: rgba(255,255,255,0.85) !important; }
+    [data-testid="stSidebar"] div {
+        color: rgba(255,255,255,0.85) !important;
+        text-align: left !important;
+    }
+    [data-testid="stSidebar"] [data-testid="stVerticalBlock"] {
+        align-items: flex-start !important;
+    }
+    [data-testid="stSidebar"] .stButton > button {
+        justify-content: flex-start !important;
+        text-align: left !important;
+    }
+    [data-testid="stSidebar"] .stMarkdown {
+        text-align: left !important;
+        width: 100% !important;
+    }
 
     [data-testid="stSidebar"] .stButton > button {
         background: transparent !important;
