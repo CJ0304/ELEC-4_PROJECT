@@ -21,7 +21,7 @@ def page_login():
     background-size: 40px 40px; z-index:0; pointer-events:none;"></div>
     """, unsafe_allow_html=True)
 
-    _, col_c, _ = st.columns([1, 1.1, 1])
+    _, col_c, _ = st.columns([0.5, 1.2, 0.5])
     with col_c:
         st.markdown("<div style='height:6vh'></div>", unsafe_allow_html=True)
 

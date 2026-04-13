@@ -121,6 +121,24 @@ def inject_css_login():
         box-shadow: 0 6px 24px rgba(212,175,55,0.45) !important;
         transform: translateY(-1px) !important;
     }
+
+    /* ── LOGIN RESPONSIVE ── */
+    @media (max-width: 768px) {
+        .login-card {
+            padding: 24px 18px;
+            margin: 0 4px;
+        }
+        .login-title { font-size: 1.5rem !important; }
+        .login-subtitle { font-size: 0.72rem; margin-bottom: 18px; }
+        .login-logo-icon { font-size: 2.4rem; }
+    }
+    @media (max-width: 480px) {
+        .login-card {
+            padding: 20px 14px;
+            border-radius: 14px;
+        }
+        .login-title { font-size: 1.3rem !important; }
+    }
     </style>
     """, unsafe_allow_html=True)
 
@@ -519,9 +537,176 @@ def inject_css_app():
 
     [data-testid="stSpinner"] p { color: var(--navy) !important; }
 
+    /* ── RESPONSIVE: TABLET (≤ 1024px) ── */
+    @media (max-width: 1024px) {
+        .main .block-container {
+            padding: 0rem 1.5rem 2rem !important;
+            max-width: 100% !important;
+        }
+        .kpi-value { font-size: 1.6rem !important; }
+        .chart-card { padding: 16px 16px 12px; }
+        .modal-card { padding: 22px; }
+    }
+
+    /* ── RESPONSIVE: MOBILE (≤ 768px) ── */
     @media (max-width: 768px) {
-        .main .block-container { padding: 0rem 1rem 2rem !important; }
+        .main .block-container {
+            padding: 0rem 0.75rem 1.5rem !important;
+            max-width: 100% !important;
+        }
+
+        /* Let Streamlit sidebar collapse on mobile — show toggle */
+        [data-testid="stSidebar"] {
+            width: 260px !important;
+            min-width: 260px !important;
+            max-width: 260px !important;
+            flex: 0 0 260px !important;
+            position: fixed !important;
+            z-index: 999 !important;
+            height: 100vh !important;
+            top: 0 !important;
+            left: 0 !important;
+            transition: transform 0.3s ease !important;
+        }
+        [data-testid="stSidebar"] > div {
+            width: 260px !important;
+            min-width: 260px !important;
+        }
+        [data-testid="collapsedControl"],
+        button[aria-label="Close sidebar"],
+        button[aria-label="Collapse sidebar"],
+        button[aria-label="Open sidebar"],
+        [data-testid="stSidebarCollapseButton"] {
+            display: flex !important;
+            position: fixed !important;
+            z-index: 1000 !important;
+            top: 8px !important;
+            left: 8px !important;
+            background: var(--navy) !important;
+            color: var(--gold) !important;
+            border-radius: var(--radius-sm) !important;
+            box-shadow: var(--shadow-md) !important;
+            width: 40px !important;
+            height: 40px !important;
+            align-items: center !important;
+            justify-content: center !important;
+        }
+
+        /* Page header — stack vertically, smaller text */
+        .page-header {
+            padding: 14px 16px;
+            margin-top: 44px;
+            margin-bottom: 14px;
+            gap: 10px;
+        }
+        .page-header-icon { font-size: 1.5rem; }
+        .page-header-title { font-size: 1.15rem !important; }
+        .page-header-sub { font-size: 0.7rem !important; }
+
+        /* KPI cards */
+        .kpi-card { padding: 14px 16px 12px; }
         .kpi-value { font-size: 1.4rem !important; }
+        .kpi-label { font-size: 0.65rem !important; }
+        .kpi-sub { font-size: 0.65rem !important; }
+
+        /* Chart cards */
+        .chart-card {
+            padding: 14px 12px 10px;
+            margin-bottom: 10px;
+        }
+        .chart-title { font-size: 0.85rem !important; margin-bottom: 10px; padding-bottom: 8px; }
+
+        /* Modal card */
+        .modal-card { padding: 18px 14px; }
+
+        /* Headings */
+        h1 { font-size: 1.5rem !important; }
+
+        /* Tabs — horizontally scrollable */
+        .stTabs [data-baseweb="tab-list"] {
+            overflow-x: auto !important;
+            -webkit-overflow-scrolling: touch;
+            flex-wrap: nowrap !important;
+            scrollbar-width: none;
+        }
+        .stTabs [data-baseweb="tab-list"]::-webkit-scrollbar { display: none; }
+        .stTabs [data-baseweb="tab"] {
+            padding: 6px 12px !important;
+            font-size: 0.8rem !important;
+            white-space: nowrap !important;
+            flex-shrink: 0 !important;
+        }
+
+        /* Metric */
+        [data-testid="stMetric"] { padding: 10px 14px; }
+        [data-testid="stMetricValue"] { font-size: 1.3rem !important; }
+
+        /* Section divider */
+        .section-divider { margin: 14px 0; }
+
+        /* Make Streamlit columns stack on mobile */
+        [data-testid="stHorizontalBlock"] {
+            flex-wrap: wrap !important;
+        }
+        [data-testid="stHorizontalBlock"] > [data-testid="stColumn"] {
+            min-width: 100% !important;
+            flex: 1 1 100% !important;
+        }
+
+        /* Dataframe — horizontal scroll */
+        [data-testid="stDataFrame"] {
+            overflow-x: auto !important;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        /* Buttons — full width on mobile */
+        .stButton > button,
+        .stFormSubmitButton > button,
+        .stDownloadButton > button {
+            font-size: 0.85rem !important;
+            padding: 8px 14px !important;
+        }
+
+        /* Form labels */
+        label,
+        .stTextInput label, .stSelectbox label, .stDateInput label,
+        .stNumberInput label, .stTextArea label, .stFileUploader label {
+            font-size: 0.72rem !important;
+        }
+
+        /* Badges */
+        .badge { font-size: 0.62rem; padding: 2px 8px; }
+    }
+
+    /* ── RESPONSIVE: SMALL MOBILE (≤ 480px) ── */
+    @media (max-width: 480px) {
+        .main .block-container {
+            padding: 0rem 0.5rem 1rem !important;
+        }
+
+        .page-header {
+            padding: 12px 14px;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 6px;
+        }
+        .page-header-title { font-size: 1.05rem !important; }
+
+        h1 { font-size: 1.3rem !important; }
+
+        .kpi-value { font-size: 1.2rem !important; }
+        .kpi-card { padding: 12px 14px 10px; }
+
+        .chart-card { padding: 10px 8px 8px; }
+
+        .modal-card { padding: 14px 10px; }
+
+        .stTabs [data-baseweb="tab"] {
+            padding: 5px 10px !important;
+            font-size: 0.75rem !important;
+        }
+
+        [data-testid="stMetricValue"] { font-size: 1.1rem !important; }
     }
     </style>
     """, unsafe_allow_html=True)
