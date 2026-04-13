@@ -227,33 +227,13 @@ def inject_css_app():
 
     /* ── SIDEBAR ── */
     [data-testid="stSidebar"] {
-        display: flex !important;
-        visibility: visible !important;
-        width: 280px !important;
-        min-width: 280px !important;
-        max-width: 280px !important;
-        flex: 0 0 280px !important;
         background: linear-gradient(175deg, #0B1F3A 0%, #162E55 55%, #0E2548 100%) !important;
         border-right: none !important;
         box-shadow: 4px 0 30px rgba(0,0,0,0.2);
-        overflow: visible !important;
-        transform: none !important;
-        transition: none !important;
     }
     [data-testid="stSidebar"] > div {
-        display: flex !important;
-        visibility: visible !important;
-        width: 280px !important;
-        min-width: 280px !important;
-        opacity: 1 !important;
-        transform: none !important;
         overflow-y: auto !important;
     }
-    [data-testid="collapsedControl"],
-    button[aria-label="Close sidebar"],
-    button[aria-label="Collapse sidebar"],
-    button[aria-label="Open sidebar"],
-    [data-testid="stSidebarCollapseButton"] { display: none !important; }
 
     [data-testid="stSidebar"],
     [data-testid="stSidebar"] p,
@@ -263,11 +243,19 @@ def inject_css_app():
         text-align: left !important;
     }
     [data-testid="stSidebar"] [data-testid="stVerticalBlock"] {
-        align-items: flex-start !important;
+        align-items: stretch !important;
+        width: 100% !important;
+    }
+    [data-testid="stSidebar"] [data-testid="stElementContainer"] {
+        width: 100% !important;
+    }
+    [data-testid="stSidebar"] .stButton {
+        width: 100% !important;
     }
     [data-testid="stSidebar"] .stButton > button {
         justify-content: flex-start !important;
         text-align: left !important;
+        width: 100% !important;
     }
     [data-testid="stSidebar"] .stMarkdown {
         text-align: left !important;
@@ -637,7 +625,7 @@ def inject_css_app():
         /* Page header — stack vertically, smaller text */
         .page-header {
             padding: 14px 16px;
-            margin-top: 44px;
+            margin-top: 0px;
             margin-bottom: 14px;
             gap: 10px;
         }

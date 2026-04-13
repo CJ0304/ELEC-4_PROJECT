@@ -129,7 +129,6 @@ def render(rec_df, svc_df):
 
     # ── Edit modal ────────────────────────────────────────────────────────────
     if st.session_state.get("edit_mode") and st.session_state.get("edit_id"):
-        st.markdown('<div class="modal-card">', unsafe_allow_html=True)
         st.markdown("### ✏️ Edit Service Record")
 
         all_df  = load_records()
@@ -179,4 +178,3 @@ def render(rec_df, svc_df):
                 st.session_state.edit_mode = False
                 st.rerun()
 
-        st.markdown('</div>', unsafe_allow_html=True)

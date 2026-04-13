@@ -20,7 +20,6 @@ def render(rec_df, svc_df):
         f"Office: {office}" if office else "Admin — Add record for any office",
     )
 
-    st.markdown('<div class="modal-card">', unsafe_allow_html=True)
     with st.form("add_record_form"):
         c1, c2 = st.columns(2)
         student_id   = c1.text_input("Student ID *",   placeholder="e.g. 2024-01001")
@@ -38,7 +37,6 @@ def render(rec_df, svc_df):
         svc_hour = c2.number_input("Hour (8–17) *", 8, 17, cur_h if 8 <= cur_h <= 17 else 8)
         remarks  = st.text_area("Remarks", placeholder="Optional notes...")
         submitted = st.form_submit_button("💾 Save Record", type="primary", use_container_width=True)
-    st.markdown('</div>', unsafe_allow_html=True)
 
     if submitted:
         if not student_id.strip() or not student_name.strip():

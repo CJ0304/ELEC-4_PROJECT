@@ -43,8 +43,6 @@ def render(svc_df):
     # ── Tab: Add Service — form always visible, no toggle needed ──────────────
     with tab_add:
         st.markdown("#### 🛠️ Add New Service")
-        st.markdown('<div class="modal-card">', unsafe_allow_html=True)
-
         with st.form("add_service_form", clear_on_submit=True):
             fc1, fc2  = st.columns(2)
             svc_name  = fc1.text_input("Service Name *", placeholder="e.g. Medical Records")
@@ -52,8 +50,6 @@ def render(svc_df):
             status    = fc1.selectbox("Status", ["Active", "Inactive"])
             desc      = st.text_area("Description", placeholder="Brief description...")
             submitted = st.form_submit_button("💾 Save Service", type="primary", use_container_width=True)
-
-        st.markdown('</div>', unsafe_allow_html=True)
 
         if submitted:
             if not svc_name.strip():
@@ -83,7 +79,6 @@ def render(svc_df):
         sel_svc = st.selectbox("Select Service to Edit", svc_df["name"].tolist(), key="edit_svc_sel")
         row     = svc_df[svc_df["name"] == sel_svc].iloc[0]
 
-        st.markdown('<div class="modal-card">', unsafe_allow_html=True)
         with st.form("edit_svc_form"):
             ec1, ec2 = st.columns(2)
             en   = ec1.text_input("Service Name", value=str(row["name"]))
@@ -98,8 +93,6 @@ def render(svc_df):
             )
             ed    = st.text_area("Description", value=str(row.get("description", "") or ""))
             saved = st.form_submit_button("💾 Save Changes", type="primary", use_container_width=True)
-
-        st.markdown('</div>', unsafe_allow_html=True)
 
         if saved:
             idx = svc_df.index[svc_df["name"] == sel_svc]

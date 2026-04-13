@@ -41,8 +41,6 @@ def render():
     # ── Tab 1: Add Staff — form always visible, no toggle ─────────────────────
     with tab1:
         st.markdown("#### 👤 Create New Staff Account")
-        st.markdown('<div class="modal-card">', unsafe_allow_html=True)
-
         with st.form("add_user_form", clear_on_submit=True):
             uc1, uc2  = st.columns(2)
             username  = uc1.text_input("Username *",  placeholder="e.g. jdelacruz")
@@ -52,8 +50,6 @@ def render():
             office    = uc1.selectbox("Assigned Office", ["(None — Admin)"] + OFFICES)
             status    = uc2.selectbox("Status", ["Active", "Inactive"])
             submitted = st.form_submit_button("💾 Create Account", type="primary", use_container_width=True)
-
-        st.markdown('</div>', unsafe_allow_html=True)
 
         if submitted:
             fresh_users = load_users()
@@ -84,7 +80,6 @@ def render():
         sel_u = st.selectbox("Select User to Edit", list(users.keys()), key="edit_usr_sel")
         u     = users[sel_u]
 
-        st.markdown('<div class="modal-card">', unsafe_allow_html=True)
         with st.form("edit_user_form"):
             ec1, ec2 = st.columns(2)
             enm  = ec1.text_input("Full Name",                  value=u["name"])
@@ -99,8 +94,6 @@ def render():
             erol  = ec2.selectbox("Role", ["Staff", "Admin"],
                                   index=0 if u["role"] == "Staff" else 1)
             saved = st.form_submit_button("💾 Save Changes", type="primary", use_container_width=True)
-
-        st.markdown('</div>', unsafe_allow_html=True)
 
         if saved:
             users[sel_u]["name"]   = enm.strip()
