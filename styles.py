@@ -394,8 +394,6 @@ def inject_css_app():
         font-family: 'DM Sans', sans-serif !important;
         font-weight: 500 !important;
         transition: all 0.2s ease !important;
-        position: relative !important;
-        z-index: 1 !important;
         cursor: pointer !important;
     }
     .stButton > button:hover {
@@ -422,8 +420,6 @@ def inject_css_app():
         font-weight: 600 !important;
         font-family: 'DM Sans', sans-serif !important;
         cursor: pointer !important;
-        position: relative !important;
-        z-index: 1 !important;
     }
     .stFormSubmitButton > button[kind="secondary"] {
         background: var(--white) !important;
@@ -482,25 +478,6 @@ def inject_css_app():
         letter-spacing: 0.5px !important;
     }
 
-    /* ── EXPANDER ── */
-    .streamlit-expanderHeader {
-        background: var(--gray-100) !important;
-        border-radius: var(--radius-sm) !important;
-        font-weight: 600 !important;
-        color: var(--navy) !important;
-        border: 1px solid var(--gray-200) !important;
-        font-family: 'DM Sans', sans-serif !important;
-    }
-    .streamlit-expanderHeader p,
-    .streamlit-expanderHeader span { color: var(--navy) !important; }
-    .streamlit-expanderContent {
-        border: 1px solid var(--gray-200) !important;
-        border-top: none !important;
-        border-radius: 0 0 var(--radius-sm) var(--radius-sm) !important;
-    }
-
-    .stAlert { border-radius: var(--radius-sm) !important; }
-    .stAlert p { color: inherit !important; }
 
     /* ── DATAFRAME ── */
     [data-testid="stDataFrame"] {
@@ -527,26 +504,12 @@ def inject_css_app():
         transition: all 0.2s ease !important;
         padding: 8px 16px !important;
         cursor: pointer !important;
-        position: relative !important;
-        z-index: 1 !important;
     }
     .stTabs [data-baseweb="tab"]:hover { background: rgba(11,31,58,0.06) !important; color: var(--navy) !important; }
     .stTabs [aria-selected="true"] { background: var(--navy) !important; color: var(--gold) !important; font-weight: 600 !important; }
     .stTabs [aria-selected="true"] p,
     .stTabs [aria-selected="true"] span { color: var(--gold) !important; }
     .stTabs [data-baseweb="tab-panel"] { padding-top: 16px !important; }
-
-    /* ── MODAL CARD ── */
-    .modal-card {
-        background: var(--white) !important;
-        border-radius: var(--radius-lg);
-        padding: 28px;
-        box-shadow: var(--shadow-lg);
-        border-top: 4px solid var(--gold);
-        margin: 12px 0;
-        position: relative;
-        z-index: 0;
-    }
 
     /* ── METRIC ── */
     [data-testid="stMetric"] { background: var(--white); border-radius: var(--radius-md); padding: 14px 18px; border-left: 3px solid var(--gold); box-shadow: var(--shadow-sm); }
@@ -559,12 +522,6 @@ def inject_css_app():
     ::-webkit-scrollbar-thumb { background: var(--gray-200); border-radius: 3px; }
     ::-webkit-scrollbar-thumb:hover { background: var(--gold); }
 
-    /* ── BADGES ── */
-    .badge { display: inline-block; padding: 2px 10px; border-radius: 20px; font-size: 0.68rem; font-weight: 700; letter-spacing: 0.5px; }
-    .badge-gold    { background: var(--gold-pale); color: #7a5f00; border: 1px solid rgba(212,175,55,0.4); }
-    .badge-success { background: rgba(46,125,94,0.1); color: #1a5c3a; }
-    .badge-danger  { background: rgba(192,57,43,0.1); color: #8b2012; }
-
     [data-testid="stSpinner"] p { color: var(--navy) !important; }
 
     /* ── RESPONSIVE: TABLET (≤ 1024px) ── */
@@ -575,7 +532,6 @@ def inject_css_app():
         }
         .kpi-value { font-size: 1.6rem !important; }
         .chart-card { padding: 16px 16px 12px; }
-        .modal-card { padding: 22px; }
     }
 
     /* ── RESPONSIVE: MOBILE (≤ 768px) ── */
@@ -647,7 +603,6 @@ def inject_css_app():
         .chart-title { font-size: 0.85rem !important; margin-bottom: 10px; padding-bottom: 8px; }
 
         /* Modal card */
-        .modal-card { padding: 18px 14px; }
 
         /* Headings */
         h1 { font-size: 1.5rem !important; }
@@ -729,7 +684,6 @@ def inject_css_app():
 
         .chart-card { padding: 10px 8px 8px; }
 
-        .modal-card { padding: 14px 10px; }
 
         .stTabs [data-baseweb="tab"] {
             padding: 5px 10px !important;
