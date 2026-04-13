@@ -23,7 +23,7 @@ def page_login():
 
     _, col_c, _ = st.columns([0.5, 1.2, 0.5])
     with col_c:
-        st.markdown("<div style='height:6vh'></div>", unsafe_allow_html=True)
+        st.markdown("<div class='login-spacer' style='height:2vh'></div>", unsafe_allow_html=True)
 
         st.markdown("""
         <div class="login-card">

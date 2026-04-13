@@ -22,6 +22,22 @@ def inject_css_login():
     html, body, [data-testid="stAppViewContainer"] {
         font-family: 'DM Sans', sans-serif !important;
         background: linear-gradient(135deg, #0B1F3A 0%, #162E55 50%, #091829 100%) !important;
+        overflow: hidden !important;
+        height: 100vh !important;
+        height: 100dvh !important;
+    }
+    .main, [data-testid="stMain"] {
+        overflow: hidden !important;
+        height: 100vh !important;
+        height: 100dvh !important;
+    }
+    .main .block-container {
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        min-height: 100vh !important;
+        min-height: 100dvh !important;
+        overflow: hidden !important;
     }
 
     #MainMenu, footer, header { visibility: hidden; }
@@ -47,6 +63,7 @@ def inject_css_login():
         padding: 0 !important;
         max-width: 100% !important;
         width: 100% !important;
+        box-sizing: border-box !important;
     }
 
     .login-card {
@@ -125,19 +142,30 @@ def inject_css_login():
     /* ── LOGIN RESPONSIVE ── */
     @media (max-width: 768px) {
         .login-card {
-            padding: 24px 18px;
+            padding: 20px 16px;
             margin: 0 4px;
         }
-        .login-title { font-size: 1.5rem !important; }
-        .login-subtitle { font-size: 0.72rem; margin-bottom: 18px; }
-        .login-logo-icon { font-size: 2.4rem; }
+        .login-title { font-size: 1.4rem !important; }
+        .login-subtitle { font-size: 0.7rem; margin-bottom: 14px; }
+        .login-logo-icon { font-size: 2.2rem; }
+        [data-testid="stForm"] .stTextInput > div > div > input {
+            padding: 8px 12px !important;
+            font-size: 0.85rem !important;
+        }
+        [data-testid="stForm"] .stFormSubmitButton > button {
+            padding: 0.55rem 1rem !important;
+            font-size: 0.88rem !important;
+        }
     }
     @media (max-width: 480px) {
         .login-card {
-            padding: 20px 14px;
+            padding: 16px 12px;
             border-radius: 14px;
+            box-shadow: 0 16px 50px rgba(0,0,0,0.5);
         }
-        .login-title { font-size: 1.3rem !important; }
+        .login-title { font-size: 1.2rem !important; }
+        .login-subtitle { font-size: 0.65rem; margin-bottom: 12px; line-height: 1.4; }
+        .login-logo-icon { font-size: 2rem; }
     }
     </style>
     """, unsafe_allow_html=True)
